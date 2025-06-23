@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flashwiz/screens/add_flashcard_screen.dart';
 import 'package:flashwiz/screens/flashcard_list_screen.dart';
 import 'package:flashwiz/screens/quiz_screen.dart';
-import 'package:flashwiz/screens/stats_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flashwiz/providers/flashcard_provider.dart';
 import 'dart:io' show Platform;
@@ -77,19 +76,6 @@ class HomeScreen extends StatelessWidget {
                           ),
                         );
                       }
-                    },
-                  ),
-                  _buildMinimalFeatureCard(
-                    context,
-                    title: 'Stats',
-                    icon: Icons.bar_chart_outlined,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const StatsScreen(),
-                        ),
-                      );
                     },
                   ),
                 ],

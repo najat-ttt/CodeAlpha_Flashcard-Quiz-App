@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flashwiz/providers/flashcard_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flashwiz/screens/add_flashcard_screen.dart';
 
 class FlashcardListScreen extends StatelessWidget {
   const FlashcardListScreen({super.key});
@@ -70,33 +71,58 @@ class FlashcardListScreen extends StatelessWidget {
                           ],
                           Align(
                             alignment: Alignment.bottomRight,
-                            child: IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (ctx) => AlertDialog(
-                                    title: const Text('Delete Flashcard'),
-                                    content: const Text('Are you sure you want to delete this flashcard?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () => Navigator.of(ctx).pop(),
-                                        child: const Text('No'),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit, color: Colors.blue),
+                                  onPressed: () async {
+                                    // Navigate to AddFlashcardScreen in edit mode
+                                    final updatedCard = await Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => AddFlashcardScreen(
+                                          flashcard: flashcard,
+                                          index: index,
+                                        ),
                                       ),
-                                      TextButton(
-                                        onPressed: () {
-                                          provider.deleteFlashcard(index);
-                                          Navigator.of(ctx).pop();
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(content: Text('Flashcard deleted')),
-                                          );
-                                        },
-                                        child: const Text('Yes'),
+                                    );
+                                    if (updatedCard != null) {
+                                      provider.updateFlashcard(index, updatedCard);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Flashcard updated')),
+                                      );
+                                    }
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                        title: const Text('Delete Flashcard'),
+                                        content: const Text('Are you sure you want to delete this flashcard?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.of(ctx).pop(),
+                                            child: const Text('No'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              provider.deleteFlashcard(index);
+                                              Navigator.of(ctx).pop();
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(content: Text('Flashcard deleted')),
+                                              );
+                                            },
+                                            child: const Text('Yes'),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                );
-                              },
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         ],
